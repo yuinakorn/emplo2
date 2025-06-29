@@ -6,7 +6,7 @@
       :key="stat.title" 
       class="bg-base-200 shadow-lg rounded-2xl hover:shadow-md transition-all duration-300 overflow-hidden"
     >
-      <div class="p-6">
+      <div class="p-6"> 
         <div class="flex items-start justify-between">
           <div>
             <p class="text-sm font-medium text-gray-500 dark:text-gray-400 card-subtext mb-1">{{ stat.title }}</p>
@@ -44,7 +44,7 @@ const stats = ref([
     },
     { 
       title: 'มาตรงเวลา', 
-      value: '230', 
+      value: '180', 
       icon: CheckCircleIcon,
       bgColor: 'bg-green-500',
       textColor: 'text-green-600',
@@ -55,7 +55,7 @@ const stats = ref([
     },
     { 
       title: 'มาสาย', 
-      value: '12',
+      value: '41',
       icon: ClockIcon,
       bgColor: 'bg-red-500',
       textColor: 'text-red-600',
@@ -66,8 +66,8 @@ const stats = ref([
     },
     { 
       title: 'ยังไม่เข้างาน/ไปราชการ/ลา', 
-      value: '17', 
-      icon: BuildingOfficeIcon,
+      value: '19', 
+      icon: ExclamationTriangleIcon,
       bgColor: 'bg-amber-500',
       textColor: 'text-amber-600',
       trendText: 'คิดเป็น',

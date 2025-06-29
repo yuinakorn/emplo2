@@ -2,18 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    '@nuxtjs/tailwindcss',
-    ['@nuxtjs/google-fonts', {
-      families: {
-        'Noto Sans Thai': {
-          wght: [100, 200, 300, 400, 500, 600, 700, 800, 900],
-          subsets: ['thai']
-        }
-      },
-      display: 'swap',
-      download: true,
-      inject: true
-    }]
+    '@nuxtjs/tailwindcss'
   ],
   css: ['~/assets/css/main.css'],
   app: {
@@ -60,6 +49,10 @@ export default defineNuxtConfig({
           rel: 'preconnect',
           href: 'https://fonts.gstatic.com',
           crossorigin: ''
+        },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Sarabun:wght@100;200;300;400;500;600;700;800;900&display=swap'
         }
       ]
     }

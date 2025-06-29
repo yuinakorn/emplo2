@@ -1,15 +1,9 @@
 <template>
   <div class="min-h-screen bg-base-100 transition-colors duration-200">
     <!-- Navigation -->
-    <CommonNav 
-      subtitle="ผู้จัดการ"
-      :breadcrumbs="[
-        { label: 'แดชบอร์ด', path: '/manager' }
-      ]"
-      :showUserMenu="true"
-      :userName="'ผู้จัดการระบบ'"
-      @logout="logout"
-    />
+    <CommonNav subtitle="ผู้จัดการ" :breadcrumbs="[
+      { label: 'แดชบอร์ด', path: '/manager' }
+    ]" :showUserMenu="true" :userName="'ผู้จัดการระบบ'" @logout="logout" />
 
     <div class="p-6">
       <!-- Header -->
@@ -18,52 +12,48 @@
         <div class="text-sm text-base-content/70">{{ currentDate }}</div>
       </div>
 
+      <!-- Stats Card -->
       <dashboardStatsCard />
 
-      <!-- Main Content -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Activities -->
+      <!-- Pie Chart - Full Width -->
+      <div class="mb-6 w-full">
+        <dashboardPieChart />
+      </div>
+
+      <!-- Department Table - Full Width -->
+      <div class="mb-6 w-full">
         <dashboardDepartmentTable />
+      </div>
 
-        <!-- Quick Actions -->
-
-        <div class="space-y-6">
-          <div class="card bg-base-200 shadow-lg">
-            <div class="card-body">
-              <h2 class="text-lg font-semibold text-base-content mb-4">การดำเนินการ</h2>
-              <div class="space-y-3">
-                <button 
-                  v-for="(action, index) in quickActions" 
-                  :key="index"
-                  class="w-full flex items-center p-3 text-left rounded-lg hover:bg-base-300 transition-colors"
-                >
-                  <component :is="action.icon" class="w-5 h-5 text-base-content/70" />
-                  <span class="ml-3 text-sm text-base-content">{{ action.label }}</span>
-                  <ChevronRightIcon class="w-4 h-4 ml-auto text-base-content/50" />
-                </button>
-              </div>
+      <!-- Bar Chart & Top Late Employees -->
+      <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Bar Chart Section -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <h2 class="text-lg font-semibold text-base-content mb-4">5 แผนกที่พนักงานมาสายบ่อยที่สุด (เดือนนี้)</h2>
+            <div class="h-72 min-h-[288px] flex items-center justify-center">
+              <canvas ref="barChartCanvas" width="400" height="288" class="w-full h-full"></canvas>
             </div>
           </div>
-
-          <!-- Team Overview -->
-          <div class="card bg-base-200 shadow-lg">
-            <div class="card-body">
-              <h2 class="text-lg font-semibold text-base-content mb-4">ทีมงาน</h2>
-              <div class="space-y-4">
-                <div v-for="member in teamMembers" :key="member.id" class="flex items-center">
-                  <div class="avatar placeholder">
-                    <div class="bg-neutral text-neutral-content rounded-full w-10">
-                      <span class="text-xs">{{ member.initials }}</span>
-                    </div>
+        </div>
+        <!-- Top 5 Late Employees Section -->
+        <div class="card bg-base-200 shadow-lg">
+          <div class="card-body">
+            <h2 class="text-lg font-semibold text-base-content mb-4">5 บุคลากรที่มาสายบ่อยที่สุด (เดือนนี้)</h2>
+            <div class="space-y-3">
+              <div v-for="(person, idx) in topLateEmployees" :key="idx" class="flex items-center p-3 rounded-lg bg-base-100 shadow-sm">
+                <div class="avatar placeholder">
+                  <div class="bg-error text-white rounded-full w-10">
+                    <span class="text-xs font-bold">{{ person.initials }}</span>
                   </div>
-                  <div class="ml-3">
-                    <p class="text-sm font-medium text-base-content">{{ member.name }}</p>
-                    <p class="text-xs text-base-content/70">{{ member.role }}</p>
-                  </div>
-                  <span :class="`ml-auto badge badge-sm ${member.status === 'online' ? 'badge-success' : 'badge-neutral'}`">
-                    {{ member.status === 'online' ? 'ออนไลน์' : 'ออฟไลน์' }}
-                  </span>
                 </div>
+                <div class="ml-3 flex-1">
+                  <p class="text-sm font-medium text-base-content">{{ person.name }}</p>
+                  <p class="text-xs text-base-content/70">{{ person.department }}</p>
+                </div>
+                <span class="badge badge-error badge-outline font-semibold px-3 py-2">
+                  {{ person.lateCount }} ครั้ง
+                </span>
               </div>
             </div>
           </div>
@@ -74,11 +64,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
-import { 
-  UserGroupIcon, 
-  DocumentTextIcon, 
-  ClockIcon, 
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
+import {
+  UserGroupIcon,
+  DocumentTextIcon,
+  ClockIcon,
   CheckCircleIcon,
   PlusIcon,
   UserPlusIcon,
@@ -95,12 +85,12 @@ useHead({
 
 // Current date in Thai format
 const currentDate = computed(() => {
-  const options = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
     day: 'numeric',
-    locale: 'th-TH' 
+    locale: 'th-TH'
   };
   return new Date().toLocaleDateString('th-TH', options);
 });
@@ -137,6 +127,128 @@ const logout = () => {
   // Add logout logic here
   alert('ออกจากระบบสำเร็จ')
   navigateTo('/login')
+}
+
+// Mock data for bar chart and late employees
+const barChartCanvas = ref(null)
+let barChart = null
+const topLateDepartments = ref([
+  { name: 'การตลาด', lateCount: 12 },
+  { name: 'ทรัพยากรบุคคล', lateCount: 10 },
+  { name: 'เทคโนโลยีสารสนเทศ', lateCount: 8 },
+  { name: 'การเงินและบัญชี', lateCount: 7 },
+  { name: 'บริการลูกค้า', lateCount: 6 }
+])
+const topLateEmployees = ref([
+  { name: 'สมชาย ใจดี', initials: 'สจ', department: 'การตลาด', lateCount: 6 },
+  { name: 'วราภรณ์ สายใจ', initials: 'วส', department: 'ทรัพยากรบุคคล', lateCount: 5 },
+  { name: 'อนุชา รักดี', initials: 'อร', department: 'เทคโนโลยีสารสนเทศ', lateCount: 5 },
+  { name: 'ปิยะดา สายสมร', initials: 'ปส', department: 'การเงินและบัญชี', lateCount: 4 },
+  { name: 'จิราภรณ์ สายทอง', initials: 'จส', department: 'บริการลูกค้า', lateCount: 4 }
+])
+
+onMounted(async () => {
+  console.log('Manager page mounted, initializing chart...')
+  await nextTick()
+  setTimeout(() => {
+    initChart()
+  }, 100)
+})
+
+const initChart = async () => {
+  console.log('initChart called, process.client:', process.client)
+  
+  if (!process.client) return
+  
+  console.log('barChartCanvas.value:', barChartCanvas.value)
+  
+  if (!barChartCanvas.value) {
+    console.error('Chart canvas element not found')
+    return
+  }
+  
+  // Destroy previous chart if it exists
+  if (barChart) {
+    console.log('Destroying previous chart')
+    barChart.destroy()
+    barChart = null
+  }
+  
+  try {
+    console.log('Importing Chart.js...')
+    // Use chart.js/auto which includes all components
+    const Chart = (await import('chart.js/auto')).default
+    console.log('Chart.js imported successfully:', Chart)
+    
+    const ctx = barChartCanvas.value.getContext('2d')
+    console.log('Canvas context:', ctx)
+    
+    const chartData = {
+      labels: topLateDepartments.value.map(d => d.name),
+      datasets: [{
+        label: 'จำนวนมาสาย (ครั้ง)',
+        data: topLateDepartments.value.map(d => d.lateCount),
+        backgroundColor: [
+          '#ef4444',   // Red
+          '#f59e0b',   // Orange  
+          '#eab308',   // Yellow
+          '#22c55e',   // Green
+          '#3b82f6'    // Blue
+        ],
+        borderColor: [
+          '#dc2626',
+          '#d97706', 
+          '#ca8a04',
+          '#16a34a',
+          '#2563eb'
+        ],
+        borderWidth: 1
+      }]
+    }
+    
+    console.log('Chart data:', chartData)
+    
+    // Create chart with simplified configuration
+    barChart = new Chart(ctx, {
+      type: 'bar',
+      data: chartData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { 
+            display: false 
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    })
+    
+    console.log('Bar chart created successfully:', barChart)
+    
+  } catch (error) {
+    console.error('Error creating bar chart:', error)
+  }
+}
+
+// Clean up chart when component is unmounted
+onUnmounted(() => {
+  if (barChart) {
+    barChart.destroy()
+  }
+})
+
+// Update chart when window is resized
+if (process.client) {
+  window.addEventListener('resize', () => {
+    if (barChart) {
+      barChart.resize()
+    }
+  })
 }
 </script>
 
