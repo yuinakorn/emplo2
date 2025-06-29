@@ -1,6 +1,6 @@
 <template>
-  <nav class="bg-base-200 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <nav class="w-full bg-base-200 shadow-lg">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between h-16">
         <!-- Left side - Title and breadcrumb -->
         <div class="flex items-center">
@@ -10,28 +10,20 @@
               <span class="text-xl font-bold text-primary">Emplo2</span>
               <span v-if="subtitle" class="text-base-content/70 ml-2">- {{ subtitle }}</span>
             </div>
-            
+
             <!-- Breadcrumb -->
             <nav v-if="breadcrumbs && breadcrumbs.length > 0" class="hidden md:flex items-center space-x-2">
               <div class="flex items-center space-x-2">
                 <span v-for="(crumb, index) in breadcrumbs" :key="index" class="flex items-center">
-                  <NuxtLink 
-                    v-if="crumb.path && index < breadcrumbs.length - 1"
-                    :to="crumb.path"
-                    class="text-base-content/70 hover:text-primary transition-colors"
-                  >
+                  <NuxtLink v-if="crumb.path && index < breadcrumbs.length - 1" :to="crumb.path"
+                    class="text-base-content/70 hover:text-primary transition-colors">
                     {{ crumb.label }}
                   </NuxtLink>
-                  <span 
-                    v-else 
-                    :class="index === breadcrumbs.length - 1 ? 'text-base-content font-medium' : 'text-base-content/70'"
-                  >
+                  <span v-else
+                    :class="index === breadcrumbs.length - 1 ? 'text-base-content font-medium' : 'text-base-content/70'">
                     {{ crumb.label }}
                   </span>
-                  <ChevronRightIcon 
-                    v-if="index < breadcrumbs.length - 1" 
-                    class="w-4 h-4 text-base-content/50 mx-2" 
-                  />
+                  <ChevronRightIcon v-if="index < breadcrumbs.length - 1" class="w-4 h-4 text-base-content/50 mx-2" />
                 </span>
               </div>
             </nav>
@@ -45,17 +37,10 @@
             <!-- Default actions -->
             <div class="flex items-center space-x-2">
               <!-- Notifications -->
-              <button 
-                v-if="showNotifications"
-                @click="toggleNotifications"
-                class="btn btn-ghost btn-sm relative"
-                title="การแจ้งเตือน"
-              >
+              <button v-if="showNotifications" @click="toggleNotifications" class="btn btn-ghost btn-sm relative"
+                title="การแจ้งเตือน">
                 <BellIcon class="w-5 h-5" />
-                <span 
-                  v-if="notificationCount > 0"
-                  class="absolute -top-1 -right-1 badge badge-error badge-xs"
-                >
+                <span v-if="notificationCount > 0" class="absolute -top-1 -right-1 badge badge-error badge-xs">
                   {{ notificationCount > 99 ? '99+' : notificationCount }}
                 </span>
               </button>
@@ -87,7 +72,33 @@
                       ตั้งค่า
                     </NuxtLink>
                   </li>
-                  <li><hr class="my-1" /></li>
+                  <li>
+                    <a>
+                      <PlusIcon class="w-4 h-4" />
+                      อนุมัติคำขอ
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <UserPlusIcon class="w-4 h-4" />
+                      เพิ่มพนักงาน
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <DocumentChartBarIcon class="w-4 h-4" />
+                      ออกรายงาน
+                    </a>
+                  </li>
+                  <li>
+                    <a>
+                      <Cog6ToothIcon class="w-4 h-4" />
+                      การตั้งค่า
+                    </a>
+                  </li>
+                  <li>
+                    <hr class="my-1" />
+                  </li>
                   <li>
                     <button @click="handleLogout" class="text-error">
                       <ArrowRightOnRectangleIcon class="w-4 h-4" />
@@ -98,12 +109,7 @@
               </div>
 
               <!-- Simple Logout Button (fallback) -->
-              <button 
-                v-else-if="showLogout"
-                @click="handleLogout" 
-                class="btn btn-ghost btn-sm"
-                title="ออกจากระบบ"
-              >
+              <button v-else-if="showLogout" @click="handleLogout" class="btn btn-ghost btn-sm" title="ออกจากระบบ">
                 <ArrowRightOnRectangleIcon class="w-5 h-5" />
                 <span class="ml-1 hidden sm:inline">ออกจากระบบ</span>
               </button>
@@ -117,24 +123,16 @@
     <div v-if="breadcrumbs && breadcrumbs.length > 0" class="md:hidden px-4 py-2 border-t border-base-300">
       <div class="flex items-center space-x-2 overflow-x-auto">
         <span v-for="(crumb, index) in breadcrumbs" :key="index" class="flex items-center whitespace-nowrap">
-          <NuxtLink 
-            v-if="crumb.path && index < breadcrumbs.length - 1"
-            :to="crumb.path"
-            class="text-base-content/70 hover:text-primary transition-colors text-sm"
-          >
+          <NuxtLink v-if="crumb.path && index < breadcrumbs.length - 1" :to="crumb.path"
+            class="text-base-content/70 hover:text-primary transition-colors text-sm">
             {{ crumb.label }}
           </NuxtLink>
-          <span 
-            v-else 
+          <span v-else
             :class="index === breadcrumbs.length - 1 ? 'text-base-content font-medium' : 'text-base-content/70'"
-            class="text-sm"
-          >
+            class="text-sm">
             {{ crumb.label }}
           </span>
-          <ChevronRightIcon 
-            v-if="index < breadcrumbs.length - 1" 
-            class="w-3 h-3 text-base-content/50 mx-1" 
-          />
+          <ChevronRightIcon v-if="index < breadcrumbs.length - 1" class="w-3 h-3 text-base-content/50 mx-1" />
         </span>
       </div>
     </div>
@@ -142,13 +140,16 @@
 </template>
 
 <script setup>
-import { 
-  BellIcon, 
-  ChevronRightIcon, 
+import {
+  BellIcon,
+  ChevronRightIcon,
   ChevronDownIcon,
   UserIcon,
   Cog6ToothIcon,
-  ArrowRightOnRectangleIcon
+  ArrowRightOnRectangleIcon,
+  PlusIcon,
+  UserPlusIcon,
+  DocumentChartBarIcon
 } from '@heroicons/vue/24/outline'
 
 // Props
@@ -235,4 +236,4 @@ const toggleNotifications = () => {
 .btn:active {
   @apply transform scale-95;
 }
-</style> 
+</style>

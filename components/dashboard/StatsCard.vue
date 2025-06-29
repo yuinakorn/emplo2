@@ -37,8 +37,8 @@ const stats = ref([
       bgColor: 'bg-blue-500',
       textColor: 'text-blue-600',
       icon: UserGroupIcon,
-      trendText: 'จากเดือนที่แล้ว',
-      trendValue: '+12.5%',
+      trendText: 'คิดเป็น',
+      trendValue: '100%',
       trendColor: 'text-green-500',
       indicatorColor: 'bg-blue-500'
     },
@@ -48,7 +48,7 @@ const stats = ref([
       icon: CheckCircleIcon,
       bgColor: 'bg-green-500',
       textColor: 'text-green-600',
-      trendText: 'จากทั้งหมด',
+      trendText: 'คิดเป็น',
       trendValue: '95.8%',
       trendColor: 'text-green-500',
       indicatorColor: 'bg-green-500'
@@ -59,7 +59,7 @@ const stats = ref([
       icon: ClockIcon,
       bgColor: 'bg-red-500',
       textColor: 'text-red-600',
-      trendText: 'จากทั้งหมด',
+      trendText: 'คิดเป็น',
       trendValue: '-12.5%',
       trendColor: 'text-red-500',
       indicatorColor: 'bg-red-500'
@@ -70,7 +70,7 @@ const stats = ref([
       icon: BuildingOfficeIcon,
       bgColor: 'bg-amber-500',
       textColor: 'text-amber-600',
-      trendText: 'จากทั้งหมด',
+      trendText: 'คิดเป็น',
       trendValue: '-7.1%',
       trendColor: 'text-amber-500',
       indicatorColor: 'bg-amber-500'

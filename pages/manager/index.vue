@@ -14,7 +14,7 @@
     <div class="p-6">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
-        <h1 class="text-2xl font-bold text-base-content">แดชบอร์ดผู้จัดการ</h1>
+        <h1 class="text-2xl font-bold text-base-content">แดชบอร์ดผู้จัดการระบบ</h1>
         <div class="text-sm text-base-content/70">{{ currentDate }}</div>
       </div>
 
@@ -22,13 +22,15 @@
 
       <!-- Main Content -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <dashboardActivities />
+        <!-- Activities -->
+        <dashboardDepartmentTable />
 
         <!-- Quick Actions -->
+
         <div class="space-y-6">
           <div class="card bg-base-200 shadow-lg">
             <div class="card-body">
-              <h2 class="text-lg font-semibold text-base-content mb-4">การดำเนินการด่วน</h2>
+              <h2 class="text-lg font-semibold text-base-content mb-4">การดำเนินการ</h2>
               <div class="space-y-3">
                 <button 
                   v-for="(action, index) in quickActions" 
@@ -106,7 +108,7 @@ const currentDate = computed(() => {
 
 // Quick actions
 const quickActions = ref([
-  { label: 'เพิ่มงานใหม่', icon: PlusIcon },
+  { label: 'อนุมัติคำขอ', icon: PlusIcon },
   { label: 'เพิ่มพนักงาน', icon: UserPlusIcon },
   { label: 'ออกรายงาน', icon: DocumentChartBarIcon },
   { label: 'การตั้งค่า', icon: Cog6ToothIcon },
@@ -118,6 +120,17 @@ const teamMembers = ref([
   { id: 2, name: 'สมหญิง ตั้งใจ', role: 'พนักงาน', status: 'online', initials: 'สญ' },
   { id: 3, name: 'เอก ใจกล้า', role: 'พนักงาน', status: 'offline', initials: 'อก' },
   { id: 4, name: 'น้องใหม่ สดใส', role: 'พนักงานฝึกงาน', status: 'online', initials: 'นม' },
+]);
+
+// ข้อมูลตัวอย่างสำหรับตารางสถานะพนักงานรายแผนก
+const departments = ref([
+  { name: 'แผนกการเงินและบัญชี', total: 28, ontime: 25, late: 2, absent: 0, status: 'ติดตาม' },
+  { name: 'แผนกการตลาด', total: 32, ontime: 28, late: 3, absent: 0, status: 'เร่งด่วน' },
+  { name: 'แผนกทรัพยากรบุคคล', total: 22, ontime: 18, late: 3, absent: 0, status: 'เร่งด่วน' },
+  { name: 'แผนกเทคโนโลยีสารสนเทศ', total: 15, ontime: 12, late: 2, absent: 0, status: 'ติดตาม' },
+  { name: 'แผนกบริการลูกค้า', total: 25, ontime: 20, late: 4, absent: 0, status: 'เร่งด่วน' },
+  { name: 'แผนกบริหารงานทั่วไป', total: 45, ontime: 32, late: 8, absent: 1, status: 'เร่งด่วน' },
+  { name: 'แผนกประชาสัมพันธ์', total: 18, ontime: 14, late: 2, absent: 0, status: 'ติดตาม' },
 ]);
 
 const logout = () => {
