@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global theme transitions */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Cyberpunk theme custom styles */
+:root {
+  --cyberpunk-pink: #ff2a6d;
+  --cyberpunk-yellow: #ffd300;
+  --cyberpunk-blue: #00f7ff;
+  --cyberpunk-purple: #20134e;
+}
+
+.theme-cyberpunk {
+  font-family: 'Courier New', monospace;
+}
+
+.theme-cyberpunk h1,
+.theme-cyberpunk h2,
+.theme-cyberpunk h3,
+.theme-cyberpunk h4,
+.theme-cyberpunk h5,
+.theme-cyberpunk h6 {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 5px var(--cyberpunk-yellow);
+}
+
+.theme-cyberpunk .btn-primary {
+  background: linear-gradient(45deg, var(--cyberpunk-pink), var(--cyberpunk-blue));
+  border: 2px solid var(--cyberpunk-yellow);
+  box-shadow: 0 0 10px var(--cyberpunk-yellow);
+  text-shadow: 0 0 5px var(--cyberpunk-yellow);
+}
+
+.theme-cyberpunk .btn-primary:hover {
+  box-shadow: 0 0 20px var(--cyberpunk-yellow);
+  transform: scale(1.05);
+}
+
+.theme-cyberpunk .text-primary {
+  color: var(--cyberpunk-yellow);
+  text-shadow: 0 0 5px var(--cyberpunk-yellow);
+}
+
+/* Theme selector active state */
+.dropdown-content .active {
+  background-color: hsl(var(--p));
+  color: hsl(var(--pc));
+}
+
+/* Smooth transitions for all theme changes */
+html {
+  transition: all 0.3s ease;
+}
+
+/* Custom scrollbar for cyberpunk theme */
+.theme-cyberpunk ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.theme-cyberpunk ::-webkit-scrollbar-track {
+  background: var(--cyberpunk-purple);
+}
+
+.theme-cyberpunk ::-webkit-scrollbar-thumb {
+  background: var(--cyberpunk-pink);
+  border-radius: 4px;
+}
+
+.theme-cyberpunk ::-webkit-scrollbar-thumb:hover {
+  background: var(--cyberpunk-yellow);
+} 
