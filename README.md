@@ -6,6 +6,10 @@
 ![ภาพประกอบ](./public/images/1.png) 
 ![ภาพประกอบ](./public/images/2.png) 
 ![ภาพประกอบ](./public/images/3.png) 
+![ภาพประกอบ](./public/images/4.png) 
+![ภาพประกอบ](./public/images/5.png) 
+![ภาพประกอบ](./public/images/6.png) 
+
 
 ## คุณสมบัติหลัก
 
