@@ -182,18 +182,31 @@
       </div>
 
       <!-- Today's Summary -->
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-2 gap-6">
         <div class="text-center">
-          <div class="text-2xl font-bold text-primary">8:30</div>
-          <div class="text-xs text-base-content/70">เข้างาน</div>
+          <div class="text-2xl font-bold" 
+               :class="attendanceStatus.clockIn?.isLate ? 'text-error' : 'text-success'">
+            {{ attendanceStatus.clockIn?.time || '--:--' }}
+          </div>
+          <div class="text-xs text-base-content/70">เข้างานจริง</div>
+          <div v-if="attendanceStatus.clockIn" class="text-xs mt-1"
+               :class="attendanceStatus.clockIn.isLate ? 'text-error' : 'text-success'">
+            {{ attendanceStatus.clockIn.status }}
+          </div>
         </div>
         <div class="text-center">
-          <div class="text-2xl font-bold text-warning">12:00</div>
-          <div class="text-xs text-base-content/70">พักเที่ยง</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl font-bold text-error">17:30</div>
-          <div class="text-xs text-base-content/70">ออกงาน</div>
+          <div class="text-2xl font-bold" 
+               :class="attendanceStatus.clockOut ? (attendanceStatus.clockOut.isEarly ? 'text-warning' : 'text-info') : 'text-base-content/30'">
+            {{ attendanceStatus.clockOut?.time || '--:--' }}
+          </div>
+          <div class="text-xs text-base-content/70">ออกงานจริง</div>
+          <div v-if="attendanceStatus.clockOut" class="text-xs mt-1"
+               :class="attendanceStatus.clockOut.isEarly ? 'text-warning' : 'text-info'">
+            {{ attendanceStatus.clockOut.status }}
+          </div>
+          <div v-else class="text-xs mt-1 text-base-content/50">
+            ยังไม่ออกงาน
+          </div>
         </div>
       </div>
 
@@ -344,7 +357,7 @@ const loadAttendanceData = async () => {
     // const data = await response.json()
     
     // Mock data for demo - replace with actual database data
-    const mockClockInTime = '08:45' // Example: came in at 8:45 AM (late)
+    const mockClockInTime = '08:10' // Example: came in at 8:45 AM (late)
     const mockClockOutTime = null // Example: clocked out at 4:00 PM (early)
     
     // Real implementation would be:
